@@ -37,3 +37,5 @@ sylius_grid:
                             transition: trust
                             graph: app_supplier
                             class: yellow
+        
+        
