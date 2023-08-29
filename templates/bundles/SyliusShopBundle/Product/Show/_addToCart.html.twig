@@ -1,8 +1,10 @@
-{% set product = order_item.variant.product %}
 
+{% set product = order_item.variant.product %}
+{{ dump(product) }}
 {% form_theme form '@SyliusShop/Form/theme.html.twig' %}
 
 <div class="ui segment" id="sylius-product-selecting-variant" {{ sylius_test_html_attribute('product-selecting-variant') }}>
+
     {{ sylius_template_event('sylius.shop.product.show.before_add_to_cart', {'product': product, 'order_item': order_item}) }}
 
     {{ form_start(form, {'action': path('sylius_shop_ajax_cart_add_item', {'productId': product.id}), 'attr': {'id': 'sylius-product-adding-to-cart', 'class': 'ui loadable form', 'novalidate': 'novalidate', 'autocomplete': 'off', 'data-redirect': path(configuration.getRedirectRoute('summary'))}}) }}
@@ -15,8 +17,15 @@
             {% include '@SyliusShop/Product/Show/_options.html.twig' %}
         {% endif %}
     {% endif %}
-    {{ form_row(form.color) }}
     {{ form_row(form.cartItem.quantity, sylius_test_form_attribute('quantity')) }}
+
+    {% if product.color %}
+        <div class="required field">
+            <label class="required">
+                Product Color : {{product.color}}
+            </label>
+        </div>
+    {% endif %}
 
     {{ sylius_template_event('sylius.shop.product.show.add_to_cart_form', {'product': product, 'order_item': order_item, 'form': form}) }}
 
